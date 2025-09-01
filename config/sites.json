@@ -1,0 +1,53 @@
+{
+  "qiita": {
+    "name": "Qiita週間ランキング",
+    "description": "Qiitaの週間記事ランキング",
+    "url": "https://qiita.com/Qiita/items/b5c1550c969776b65b9b",
+    "language": "ja",
+    "outputFile": "qiita-weekly.xml",
+    "scraping": {
+      "itemSelector": "h3[data-sourcepos]",
+      "fields": {
+        "title": {
+          "selector": "a:last-child",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": "a:last-child",
+          "attribute": "href"
+        },
+        "author": {
+          "selector": "+ p a[href^='https://qiita.com/']:not([href*='/tags/'])",
+          "attribute": "text"
+        },
+        "authorLink": {
+          "selector": "+ p a[href^='https://qiita.com/']:not([href*='/tags/'])",
+          "attribute": "href"
+        },
+        "tags": {
+          "selector": "+ p a[href*='/tags/']",
+          "attribute": "text",
+          "multiple": true
+        },
+        "likes": {
+          "selector": "+ p",
+          "attribute": "text",
+          "transform": "extractLikes"
+        },
+        "description": {
+          "selector": "a:last-child",
+          "attribute": "text",
+          "transform": "createDescription"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "Qiita週間ランキング",
+      "description": "Qiitaの週間人気記事ランキング（日曜・木曜更新）",
+      "site_url": "https://qiita.com",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
+  }
+}

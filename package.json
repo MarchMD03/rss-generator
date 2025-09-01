@@ -1,0 +1,25 @@
+{
+  "name": "rss-generator",
+  "version": "1.0.0",
+  "description": "任意のWebサイトのRSSを生成するプログラムです。",
+  "main": "src/index.js",
+  "scripts": {
+    "generate": "node src/index.js",
+    "dev": "node src/index.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "rss": "^1.2.2",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "rss",
+    "scraping",
+    "github-actions"
+  ],
+  "author": "MarchMD03",
+  "license": "MIT"
+}
