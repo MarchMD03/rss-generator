@@ -3,10 +3,8 @@ name: Generate RSS Feeds
 
 on:
   schedule:
-    # 日曜日の午前6時 (UTC 21:00 土曜日)
-    - cron: '0 21 * * 6'
-    # 木曜日の午前6時 (UTC 21:00 水曜日)  
-    - cron: '0 21 * * 3'
+    # 毎日 6:00 JST (UTC 21:00)
+    - cron: '0 21 * * *'
   workflow_dispatch: # 手動実行も可能
 
 jobs:

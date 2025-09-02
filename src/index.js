@@ -198,10 +198,22 @@ async function main() {
       const rssGenerator = new RSSGenerator(siteConfig);
       const rssXml = rssGenerator.generate(items);
 
-      // ファイル保存
+      // ファイル保存（前回と内容が同じならスキップ）
       const outputPath = path.join('./dist', siteConfig.outputFile);
-      await fs.writeFile(outputPath, rssXml, 'utf8');
-      console.log(`RSS saved to ${outputPath}`);
+      let shouldWrite = true;
+      if (fs.existsSync(outputPath)) {
+        const prevXml = await fs.readFile(outputPath, 'utf8');
+        // pubDateや最終更新日など可変部分を除外して比較（簡易: <item>部分のみ比較）
+        const stripDynamic = xml => xml.replace(/<pubDate>.*?<\/pubDate>/g, '').replace(/<lastBuildDate>.*?<\/lastBuildDate>/g, '');
+        if (stripDynamic(prevXml) === stripDynamic(rssXml)) {
+          console.log(`No change detected for ${siteKey}, skipping overwrite.`);
+          shouldWrite = false;
+        }
+      }
+      if (shouldWrite) {
+        await fs.writeFile(outputPath, rssXml, 'utf8');
+        console.log(`RSS saved to ${outputPath}`);
+      }
     }
 
     // インデックスページ作成
