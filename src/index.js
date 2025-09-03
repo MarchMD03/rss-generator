@@ -146,28 +146,13 @@ class RSSGenerator {
     items.forEach((item, index) => {
       // 詳細な説明を生成
       let description = item.description || item.title;
-      if (item.author) {
-        description += ` by ${item.author}`;
-      }
-      if (item.tags && Array.isArray(item.tags) && item.tags.length > 0) {
-        description += ` | タグ: ${item.tags.join(', ')}`;
-      }
-      if (item.likes && item.likes > 0) {
-        description += ` | ${item.likes} いいね`;
-      }
 
       feed.item({
         title: item.title,
         description: description,
         url: item.link,
         author: item.author || 'Qiita',
-        date: item.pubDate || new Date(),
-        // カスタムフィールド
-        custom_elements: [
-          { 'qiita:likes': item.likes || 0 },
-          { 'qiita:author_link': item.authorLink || '' },
-          { 'qiita:tags': (item.tags || []).join(',') }
-        ]
+        date: item.pubDate || new Date()
       });
     });
 

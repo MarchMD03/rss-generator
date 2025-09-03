@@ -124,20 +124,6 @@ GitHub Pagesにデプロイ
         "author": {
           "selector": ".author",
           "attribute": "text"
-        },
-        "description": {
-          "selector": ".summary",
-          "attribute": "text"
-        },
-        "tags": {
-          "selector": ".tag",
-          "attribute": "text",
-          "multiple": true  // 複数値取得の場合
-        },
-        "customField": {
-          "selector": ".custom",
-          "attribute": "text",
-          "transform": "customTransform"  // カスタム変換
         }
       }
     },
@@ -152,20 +138,7 @@ GitHub Pagesにデプロイ
 }
 ```
 
-### 3. カスタム変換処理追加（必要な場合）
-
-`src/index.js`の`transformData`メソッドにケースを追加：
-
-```javascript
-case 'customTransform':
-  // カスタム変換ロジック
-  if (value) {
-    return value.replace(/特定パターン/, '置換後');
-  }
-  return value;
-```
-
-### 4. テスト実行
+### 3. テスト実行
 
 手動実行で動作確認後、本番環境にプッシュ
 
@@ -236,7 +209,8 @@ npm run dev
   "itemSelector": "article",
   "fields": {
     "title": { "selector": "h2", "attribute": "text" },
-    "link": { "selector": "h2 a", "attribute": "href" }
+    "link": { "selector": "h2 a", "attribute": "href" },
+    "author": { "selector": ".author", "attribute": "text" }
   }
 }
 ```
@@ -251,14 +225,9 @@ npm run dev
     "link": { "selector": ".post-title a", "attribute": "href" },
     "date": { 
       "selector": ".post-date", 
-      "attribute": "text",
-      "transform": "parseDate"
+      "attribute": "text"
     },
-    "category": {
-      "selector": ".category-tag",
-      "attribute": "text",
-      "multiple": true
-    }
+    "author": { "selector": ".author", "attribute": "text" }
   }
 }
 ```

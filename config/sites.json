@@ -19,25 +19,6 @@
         "author": {
           "selector": "+ p a[href^='https://qiita.com/']:not([href*='/tags/'])",
           "attribute": "text"
-        },
-        "authorLink": {
-          "selector": "+ p a[href^='https://qiita.com/']:not([href*='/tags/'])",
-          "attribute": "href"
-        },
-        "tags": {
-          "selector": "+ p a[href*='/tags/']",
-          "attribute": "text",
-          "multiple": true
-        },
-        "likes": {
-          "selector": "+ p",
-          "attribute": "text",
-          "transform": "extractLikes"
-        },
-        "description": {
-          "selector": "a:last-child",
-          "attribute": "text",
-          "transform": "createDescription"
         }
       }
     },
