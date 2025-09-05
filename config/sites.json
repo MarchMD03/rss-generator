@@ -6,6 +6,7 @@
     "language": "ja",
     "outputFile": "qiita-weekly.xml",
     "scraping": {
+      "scopeSelector": "body",
       "itemSelector": "h3[data-sourcepos]",
       "fields": {
         "title": {
@@ -39,6 +40,7 @@
     "outputFile": "techfeed-daily.xml",
     "usePuppeteer": true,
     "scraping": {
+      "scopeSelector": "#lang-ja",
       "itemSelector": ".entry-list-item article.entry",
       "fields": {
         "title": {

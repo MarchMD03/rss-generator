@@ -56,8 +56,11 @@ class GenericScraper {
       const $ = cheerio.load(html);
       const items = [];
 
-      // 記事データを抽出
-      $(this.config.scraping.itemSelector).each((index, element) => {
+  // scopeSelector（CSSセレクター）が必須。指定セクション内だけを対象にする
+  const $scope = $(this.config.scraping.scopeSelector);
+
+  // 記事データを抽出
+  $scope.find(this.config.scraping.itemSelector).each((index, element) => {
         const item = {};
         
         // 各フィールドを抽出
