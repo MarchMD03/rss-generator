@@ -357,3 +357,67 @@ schedule:
 ---
 
 **作成者向けメモ**: このREADMEは将来の自分が迷わないよう、実装詳細とメンテナンス手順を詳細に記載しました。新サイト追加時は必ずテスト実行を行い、正常動作確認後に本番反映してください。
+
+## config/sites.json 設定項目の解説
+
+新しいRSSを追加する際は、以下の各項目を設定してください。
+
+| キー名           | 必須 | 内容・使い方 |
+|------------------|------|---------------------------------------------------------------|
+| name             | ○    | サイト名やRSSの表示名。例: "Qiita週間ランキング" |
+| description      | ○    | RSSの説明文。サイトやフィードの概要を記載。 |
+| url              | ○    | スクレイピング対象のURL。日付変数（{YYYY}など）も利用可。 |
+| outputFile       | ○    | 生成するRSSファイル名（例: "qiita-weekly.xml"）。 |
+| usePuppeteer     | 任意 | 動的HTML取得が必要な場合true。通常は不要。 |
+| scraping         | ○    | スクレイピング設定オブジェクト。詳細は下記参照。 |
+| └ scopeSelector  | ○    | 記事一覧の親要素CSSセレクター。例: "body"や"#main"。 |
+| └ itemSelector   | ○    | 記事1件を表す要素のCSSセレクター。例: "article"。 |
+| └ fields         | ○    | 各記事から抽出するデータの設定。 |
+|   └ title        | ○    | 記事タイトル抽出設定。selectorで要素、attributeで値種別。 |
+|   └ link         | ○    | 記事URL抽出設定。attributeは通常"href"。 |
+|   └ author       | 任意 | 著者抽出設定。 |
+|   └ date         | 任意 | 日付抽出設定。 |
+|   └ thumbnail    | 任意 | サムネイル画像抽出設定。 |
+|   └ ...          | 任意 | その他必要なフィールドを追加可能。 |
+| rssConfig        | ○    | RSS出力設定オブジェクト。詳細は下記参照。 |
+| └ title          | ○    | RSSフィードのタイトル。 |
+| └ description    | ○    | RSSフィードの説明。 |
+| └ site_url       | ○    | 元サイトのURL。 |
+| └ feed_url       | 任意 | RSSフィードのURL（自動設定されるので通常不要）。 |
+| └ language       | ○    | 言語コード（例: "ja"）。 |
+| └ ttl            | ○    | RSSの有効期間（分単位）。 |
+
+### scraping.fields の詳細
+- selector: 記事要素内で抽出したい部分のCSSセレクター。
+- attribute: "text"ならテキスト、"href"ならリンク、"src"なら画像URLなど。
+- prefix: 相対URLの場合に付与する文字列（例: "https://example.com"）。
+- multiple: trueで複数要素を配列で取得。
+- transform: データ変換処理（例: "parseQiitaDate"）。
+
+### 追加例
+```json
+"new-site": {
+  "name": "新しいサイト",
+  "description": "新サイトの説明",
+  "url": "https://example.com/articles",
+  "outputFile": "new-site.xml",
+  "scraping": {
+    "scopeSelector": "#main",
+    "itemSelector": ".article-item",
+    "fields": {
+      "title": { "selector": ".title", "attribute": "text" },
+      "link": { "selector": ".title a", "attribute": "href" },
+      "author": { "selector": ".author", "attribute": "text" }
+    }
+  },
+  "rssConfig": {
+    "title": "新サイトRSS",
+    "description": "新サイトのRSSフィード",
+    "site_url": "https://example.com",
+    "language": "ja",
+    "ttl": 60
+  }
+}
+```
+
+---
