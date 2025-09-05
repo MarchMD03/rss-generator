@@ -11,6 +11,32 @@ GitHub Actions + GitHub Pagesを使用した、無料で動作する汎用的な
 - **特徴**: 設定ファイルベースで新サイトを簡単追加可能
   - 前日とRSS内容が同じ場合はファイルを更新しません（無駄な更新・デプロイを抑制）
 
+## 動的スクレイピングについて
+
+一部のサイト（例：TechFeed）は、JavaScriptで動的にHTMLが生成されるため、通常の静的スクレイピング（axios + cheerio）では記事情報を取得できません。
+
+このような場合は、[Puppeteer](https://pptr.dev/) を利用してブラウザを自動操作し、ページのレンダリング後のHTMLから情報を取得します。
+
+### 設定方法
+
+`config/sites.json` の対象サイト設定に `"usePuppeteer": true` を追加してください。
+
+```json
+{
+   "techfeed": {
+      "url": "https://techfeed.io/feeds/daily-ranking/{YYYY}/{M}/{D}",
+      "usePuppeteer": true,
+      ...
+   }
+}
+```
+
+### 注意事項
+
+- PuppeteerはChromeを自動操作するため、実行環境によっては追加の依存（ライブラリ等）が必要な場合があります。
+- サイトによっては動的要素の取得に待機処理（waitForSelector等）が必要です。
+- スクレイピング対象のサイト構造が変わると、設定やコードの修正が必要になる場合があります。
+
 ## ディレクトリ構成
 
 ```

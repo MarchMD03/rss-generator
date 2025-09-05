@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const puppeteer = require('puppeteer');
 const RSS = require('rss');
 
 // 設定ファイル読み込み
@@ -17,16 +18,42 @@ class GenericScraper {
   async scrape() {
     try {
       console.log(`Scraping ${this.config.name}...`);
-      
-      // ページを取得
-      const response = await axios.get(this.config.url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; RSS-Generator/1.0; +https://github.com/MarchMD03/rss-generator)'
-        },
-        timeout: 30000
-      });
 
-      const $ = cheerio.load(response.data);
+      // URLの日付プレースホルダを置換
+      let url = this.config.url;
+      if (url && url.includes('{YYYY}')) {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        url = url.replace('{YYYY}', yyyy)
+                 .replace('{M}', m)
+                 .replace('{D}', d);
+      }
+
+      let html;
+      if (this.config.usePuppeteer) {
+        // Puppeteerで動的HTML取得
+        const browser = await puppeteer.launch({
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        const page = await browser.newPage();
+        await page.setUserAgent('Mozilla/5.0 (compatible; RSS-Generator/1.0; +https://github.com/MarchMD03/rss-generator)');
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        html = await page.content();
+        await browser.close();
+      } else {
+        // axiosで静的HTML取得
+        const response = await axios.get(url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; RSS-Generator/1.0; +https://github.com/MarchMD03/rss-generator)'
+          },
+          timeout: 30000
+        });
+        html = response.data;
+      }
+
+      const $ = cheerio.load(html);
       const items = [];
 
       // 記事データを抽出

@@ -30,5 +30,46 @@
       "language": "ja",
       "ttl": 60
     }
+  },
+  "techfeed": {
+    "name": "TechFeedデイリー人気記事",
+    "description": "TechFeedのデイリー人気記事ランキング",
+    "url": "https://techfeed.io/categories/all/selections/daily/{YYYY}/{M}/{D}",
+    "language": "ja",
+    "outputFile": "techfeed-daily.xml",
+    "usePuppeteer": true,
+    "scraping": {
+      "itemSelector": ".entry-list-item article.entry",
+      "fields": {
+        "title": {
+          "selector": ".entry-title-text",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": ".entry-title.text-link-button",
+          "attribute": "href"
+        },
+        "author": {
+          "selector": ".rec-channel",
+          "attribute": "text"
+        },
+        "date": {
+          "selector": ".rec-date",
+          "attribute": "text"
+        },
+        "thumbnail": {
+          "selector": ".entry-thumbnail img",
+          "attribute": "src"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "TechFeedデイリー人気記事",
+      "description": "TechFeedのデイリー人気記事ランキング",
+      "site_url": "https://techfeed.io",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
   }
 }
