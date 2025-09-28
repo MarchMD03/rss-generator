@@ -73,5 +73,89 @@
       "language": "ja",
       "ttl": 60
     }
+  },
+  "zenn-tech": {
+    "name": "Zenn Techトレンド",
+    "description": "ZennのTechカテゴリのトレンド記事一覧",
+    "url": "https://zenn.dev/",
+    "language": "ja",
+    "outputFile": "zenn-tech.xml",
+    "usePuppeteer": true,
+    "scraping": {
+      "scopeSelector": "#tech-trend .ArticleList_listContainer__m2qg0",
+      "itemSelector": ".ArticleList_itemContainer__UNI2Y article.ArticleListItem_container__qIG0Q",
+      "fields": {
+        "title": {
+          "selector": ".ArticleListItem_title__bnVSg",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": ".ArticleListItem_link__x5PVw",
+          "attribute": "href"
+        },
+        "author": {
+          "selector": ".ArticleListItem_userName__p6vjX a:first-child",
+          "attribute": "text"
+        },
+        "date": {
+          "selector": ".ArticleListItem_date___2_aU",
+          "attribute": "text"
+        },
+        "thumbnail": {
+          "selector": ".ArticleListItem_avatar__iTEjn img",
+          "attribute": "src"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "Zenn Techトレンド",
+      "description": "ZennのTechカテゴリのトレンド記事一覧",
+      "site_url": "https://zenn.dev/",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
+  },
+  "zenn-idea": {
+    "name": "Zenn Ideasトレンド",
+    "description": "ZennのIdeasカテゴリのトレンド記事一覧",
+    "url": "https://zenn.dev/",
+    "language": "ja",
+    "outputFile": "zenn-idea.xml",
+    "usePuppeteer": true,
+    "scraping": {
+      "scopeSelector": "#idea-trend .ArticleList_listContainer__m2qg0",
+      "itemSelector": ".ArticleList_itemContainer__UNI2Y article.ArticleListItem_container__qIG0Q",
+      "fields": {
+        "title": {
+          "selector": ".ArticleListItem_title__bnVSg",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": ".ArticleListItem_link__x5PVw",
+          "attribute": "href"
+        },
+        "author": {
+          "selector": ".ArticleListItem_userName__p6vjX a:first-child",
+          "attribute": "text"
+        },
+        "date": {
+          "selector": ".ArticleListItem_date___2_aU",
+          "attribute": "text"
+        },
+        "thumbnail": {
+          "selector": ".ArticleListItem_avatar__iTEjn img",
+          "attribute": "src"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "Zenn Ideasトレンド",
+      "description": "ZennのIdeasカテゴリのトレンド記事一覧",
+      "site_url": "https://zenn.dev/",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
   }
 }
