@@ -42,6 +42,8 @@
     "scraping": {
       "scopeSelector": "#lang-ja",
       "itemSelector": ".entry-list-item article.entry",
+      "waitForSelector": "#lang-ja .entry-list-item article.entry",
+      "waitForSelectorTimeout": 20000,
       "fields": {
         "title": {
           "selector": ".entry-title-text",

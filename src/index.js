@@ -39,9 +39,30 @@ class GenericScraper {
         });
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (compatible; RSS-Generator/1.0; +https://github.com/MarchMD03/rss-generator)');
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-        html = await page.content();
-        await browser.close();
+        try {
+          await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+
+          // 設定で明示されたセレクタがあれば使い、無い場合はscope + itemを結合して待機対象を決める
+          const defaultWaitSelector = [this.config.scraping.scopeSelector, this.config.scraping.itemSelector]
+            .filter(Boolean)
+            .join(' ')
+            .trim();
+          const waitSelector = this.config.scraping.waitForSelector || (defaultWaitSelector.length ? defaultWaitSelector : null);
+          const waitTimeout = this.config.scraping.waitForSelectorTimeout || 15000;
+
+          if (waitSelector) {
+            try {
+              // 記事ノードが描画されるまで待ってからページ内容を取得する
+              await page.waitForSelector(waitSelector, { timeout: waitTimeout });
+            } catch (waitError) {
+              console.warn(`Timeout waiting for selector "${waitSelector}" on ${this.config.name}: ${waitError.message}`);
+            }
+          }
+
+          html = await page.content();
+        } finally {
+          await browser.close();
+        }
       } else {
         // axiosで静的HTML取得
         const response = await axios.get(url, {
