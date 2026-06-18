@@ -159,5 +159,91 @@
       "language": "ja",
       "ttl": 60
     }
+  },
+  "zenn-tech-weekly": {
+    "name": "Zenn Tech週間ランキング",
+    "description": "ZennのTechカテゴリの週間ランキング（explore）",
+    "url": "https://zenn.dev/articles/explore",
+    "language": "ja",
+    "outputFile": "zenn-tech-weekly.xml",
+    "usePuppeteer": true,
+    "scraping": {
+      "scopeSelector": "#tech-weekly [class*='ArticleList_listContainer']",
+      "itemSelector": "article[class*='ArticleListItem_container']",
+      "fields": {
+        "title": {
+          "selector": "[class*='ArticleListItem_title']",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": "a[class*='ArticleListItem_link']",
+          "attribute": "href",
+          "prefix": "https://zenn.dev"
+        },
+        "author": {
+          "selector": "[class*='ArticleListItem_userName'] a:first-child",
+          "attribute": "text"
+        },
+        "date": {
+          "selector": "[class*='ArticleListItem_date']",
+          "attribute": "text"
+        },
+        "thumbnail": {
+          "selector": "[class*='ArticleListItem_avatar'] img",
+          "attribute": "src"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "Zenn Tech週間ランキング",
+      "description": "ZennのTechカテゴリの週間ランキング",
+      "site_url": "https://zenn.dev/articles/explore",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
+  },
+  "zenn-idea-weekly": {
+    "name": "Zenn Idea週間ランキング",
+    "description": "ZennのIdeaカテゴリの週間ランキング（explore）",
+    "url": "https://zenn.dev/articles/explore",
+    "language": "ja",
+    "outputFile": "zenn-idea-weekly.xml",
+    "usePuppeteer": true,
+    "scraping": {
+      "scopeSelector": "#idea-weekly [class*='ArticleList_listContainer']",
+      "itemSelector": "article[class*='ArticleListItem_container']",
+      "fields": {
+        "title": {
+          "selector": "[class*='ArticleListItem_title']",
+          "attribute": "text"
+        },
+        "link": {
+          "selector": "a[class*='ArticleListItem_link']",
+          "attribute": "href",
+          "prefix": "https://zenn.dev"
+        },
+        "author": {
+          "selector": "[class*='ArticleListItem_userName'] a:first-child",
+          "attribute": "text"
+        },
+        "date": {
+          "selector": "[class*='ArticleListItem_date']",
+          "attribute": "text"
+        },
+        "thumbnail": {
+          "selector": "[class*='ArticleListItem_avatar'] img",
+          "attribute": "src"
+        }
+      }
+    },
+    "rssConfig": {
+      "title": "Zenn Idea週間ランキング",
+      "description": "ZennのIdeaカテゴリの週間ランキング",
+      "site_url": "https://zenn.dev/articles/explore",
+      "feed_url": "",
+      "language": "ja",
+      "ttl": 60
+    }
   }
 }
