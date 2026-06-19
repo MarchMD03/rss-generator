@@ -19,6 +19,11 @@ class GenericScraper {
     try {
       console.log(`Scraping ${this.config.name}...`);
 
+      // __NEXT_DATA__（Next.jsの埋め込みJSON）から抽出する方式
+      if (this.config.extract && this.config.extract.type === 'nextData') {
+        return await this.scrapeNextData();
+      }
+
       // URLの日付プレースホルダを置換
       let url = this.config.url;
       if (url && url.includes('{YYYY}')) {
@@ -142,6 +147,63 @@ class GenericScraper {
     }
   }
 
+  // __NEXT_DATA__ JSONから記事データを抽出する
+  // Zennのexplore/トップページは記事カードの中身をクライアント描画するため、
+  // HTMLに埋め込まれた __NEXT_DATA__ のJSONを直接読む方が確実（puppeteer不要）。
+  async scrapeNextData() {
+    const url = this.config.url;
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; RSS-Generator/1.0; +https://github.com/MarchMD03/rss-generator)'
+      },
+      timeout: 30000
+    });
+
+    const $ = cheerio.load(response.data);
+    const raw = $('#__NEXT_DATA__').contents().text();
+    if (!raw) {
+      console.warn(`__NEXT_DATA__ not found for ${this.config.name}`);
+      return [];
+    }
+
+    const data = JSON.parse(raw);
+    const list = this.getByPath(data, this.config.extract.arrayPath);
+    if (!Array.isArray(list)) {
+      console.warn(`Array not found at "${this.config.extract.arrayPath}" for ${this.config.name}`);
+      return [];
+    }
+
+    const items = [];
+    list.forEach((entry) => {
+      const item = {};
+      Object.entries(this.config.extract.fields).forEach(([key, fieldConfig]) => {
+        const cfg = typeof fieldConfig === 'string' ? { path: fieldConfig } : fieldConfig;
+        let value = this.getByPath(entry, cfg.path);
+
+        if (cfg.prefix && typeof value === 'string' && !value.startsWith('http')) {
+          value = cfg.prefix + value;
+        }
+        if (cfg.transform) {
+          value = this.transformData(value, cfg.transform);
+        }
+        item[key] = value;
+      });
+
+      if (item.title && item.link) {
+        items.push(item);
+      }
+    });
+
+    console.log(`Found ${items.length} items for ${this.config.name}`);
+    return items;
+  }
+
+  // "a.b.c" 形式のパスでネストしたオブジェクトから値を取り出す
+  getByPath(obj, path) {
+    if (!path) return undefined;
+    return path.split('.').reduce((acc, key) => (acc == null ? acc : acc[key]), obj);
+  }
+
   // データ変換関数
   transformData(value, transformType) {
     switch (transformType) {
@@ -161,6 +223,9 @@ class GenericScraper {
           return match ? parseInt(match[1]) : 0;
         }
         return 0;
+      case 'parseDate':
+        // ISO形式の日付文字列をDateに変換 (例: "2026-06-15T11:27:32.312+09:00")
+        return value ? new Date(value) : new Date();
       case 'createDescription':
         // タイトルを元に説明を生成
         return value ? `${value}` : '';
