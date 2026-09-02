@@ -129,12 +129,12 @@
   "zenn-tech-weekly": {
     "name": "Zenn Tech週間ランキング",
     "description": "ZennのTech記事の週間ランキング",
-    "url": "https://zenn.dev/articles/explore?tech_order=weekly",
+    "url": "https://zenn.dev/articles/trendings?type=tech&period=monthly",
     "language": "ja",
     "outputFile": "zenn-tech-weekly.xml",
     "extract": {
       "type": "nextData",
-      "arrayPath": "props.pageProps.weeklyTechArticles",
+      "arrayPath": "props.pageProps.articles",
       "fields": {
         "title": { "path": "title" },
         "link": { "path": "path", "prefix": "https://zenn.dev" },
@@ -145,7 +145,7 @@
     "rssConfig": {
       "title": "Zenn Tech週間ランキング",
       "description": "ZennのTech記事の週間人気ランキング",
-      "site_url": "https://zenn.dev/articles/explore?tech_order=weekly",
+      "site_url": "https://zenn.dev/articles/trendings?type=tech&period=monthly",
       "feed_url": "",
       "language": "ja",
       "ttl": 60
@@ -154,12 +154,12 @@
   "zenn-idea-weekly": {
     "name": "Zenn Idea週間ランキング",
     "description": "ZennのIdea記事の週間ランキング",
-    "url": "https://zenn.dev/articles/explore?idea_order=weekly",
+    "url": "https://zenn.dev/articles/trendings?type=idea&period=monthly",
     "language": "ja",
     "outputFile": "zenn-idea-weekly.xml",
     "extract": {
       "type": "nextData",
-      "arrayPath": "props.pageProps.weeklyIdeaArticles",
+      "arrayPath": "props.pageProps.articles",
       "fields": {
         "title": { "path": "title" },
         "link": { "path": "path", "prefix": "https://zenn.dev" },
@@ -170,7 +170,7 @@
     "rssConfig": {
       "title": "Zenn Idea週間ランキング",
       "description": "ZennのIdea記事の週間人気ランキング",
-      "site_url": "https://zenn.dev/articles/explore?idea_order=weekly",
+      "site_url": "https://zenn.dev/articles/trendings?type=idea&period=monthly",
       "feed_url": "",
       "language": "ja",
       "ttl": 60
